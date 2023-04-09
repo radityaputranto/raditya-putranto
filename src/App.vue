@@ -2,7 +2,7 @@
   <div class="mt-4">
     <BlobBackground />
     <div class="content container mx-auto px-4">
-      <p class="text-md">Let's get in touch 🙋‍♂️</p>
+      <Greeting />
       <p class="font-semibold text-xl">
         Any project ideas? <br />
         Ask Something?
@@ -23,6 +23,7 @@
 import BlobBackground from "./components/BlobBackground.vue";
 import SocialMediaBtn from "./components/SocialMediaBtn.vue";
 import LinkBtn from "./components/LinkBtn.vue";
+import Greeting from "./components/Greeting.vue";
 
 export default {
   name: "IndexPage",
@@ -30,6 +31,7 @@ export default {
     BlobBackground,
     SocialMediaBtn,
     LinkBtn,
+    Greeting,
   },
   data() {
     return {};
