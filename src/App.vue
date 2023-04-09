@@ -1,70 +1,45 @@
 <template>
-  <div>
-    <small>Let's get in touch</small>
-    <h1>Raditya Putranto</h1>
-    <h6>Contact me via:</h6>
-    <div class="grid grid-cols-2 gap-4">
-      <div v-for="item in links" :key="item.id">
-        <a
-          :href="item.url"
-          target="_blank"
-          class="py-2 px-4 font-semibold rounded-lg shadow-md text-white bg-green-500 hover:bg-green-700"
-          ><font-awesome-icon class="mr-2" :icon="['fab', item.icon]" />{{
-            item.name
-          }}</a
-        >
-      </div>
+  <div class="mt-4">
+    <BlobBackground />
+    <div class="content container mx-auto px-4">
+      <p class="text-md">Let's get in touch 🙋‍♂️</p>
+      <p class="font-semibold text-xl">
+        Any project ideas? <br />
+        Ask Something?
+      </p>
+      <img src="./assets/img/memoji.png" alt="" class="img-profile mt-4" />
+      <p class="font-bold text-3xl">Raditya Putranto</p>
+      <p class="text-lg mb-2">Find me on:</p>
+      <SocialMediaBtn />
+
+      <br /><br />
+      <p class="text-lg mt-4 mb-2 mt-4">Other Link:</p>
+      <LinkBtn />
     </div>
   </div>
 </template>
 
 <script>
+import BlobBackground from "./components/BlobBackground.vue";
+import SocialMediaBtn from "./components/SocialMediaBtn.vue";
+import LinkBtn from "./components/LinkBtn.vue";
+
 export default {
   name: "IndexPage",
+  components: {
+    BlobBackground,
+    SocialMediaBtn,
+    LinkBtn,
+  },
   data() {
-    return {
-      links: [
-        {
-          icon: "linkedin",
-          name: "Linkedin",
-          url: "https://www.linkedin.com/in/radityaputranto/",
-        },
-        {
-          icon: "instagram",
-          name: "Instagram",
-          url: "http://http://instagram.com/raditya_putranto",
-        },
-        {
-          icon: "twitter",
-          name: "twitter",
-          url: "https://twitter.com/radityaputranto",
-        },
-        {
-          icon: "medium",
-          name: "Medium",
-          url: "https://medium.com/@radityaputranto",
-        },
-        {
-          icon: "spotify",
-          name: "Spotify",
-          url: "https://open.spotify.com/user/21ercmyaahviavsid45c74oai?si=sLeETtgCS1GNa3D4V-_Osg&nd=1",
-        },
-        {
-          icon: "soundcloud",
-          name: "Soundcloud",
-          url: "https://soundcloud.com/raditya_putranto",
-        },
-      ],
-    };
+    return {};
   },
 };
 </script>
 
 <style>
-.btn {
-  @apply py-2 px-4 font-semibold rounded-lg shadow-md;
-}
-.btn-green {
-  @apply text-white bg-green-500 hover:bg-green-700;
+.img-profile {
+  border-radius: 50%;
+  width: 120px;
 }
 </style>
