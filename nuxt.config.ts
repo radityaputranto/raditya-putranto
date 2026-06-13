@@ -8,6 +8,7 @@ export default defineNuxtConfig({
     '@nuxtjs/supabase',
     '@nuxt/fonts',
     '@nuxt/image',
+    '@nuxt/icon',
   ],
 
   app: {

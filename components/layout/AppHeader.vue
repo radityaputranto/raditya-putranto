@@ -1,50 +1,38 @@
 <template>
-  <header
-    ref="headerEl"
-    class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-smooth"
-    :class="scrolled ? 'glass-nav shadow-nav' : 'bg-transparent'"
-  >
-    <div class="max-w-container mx-auto px-6 lg:px-8">
-      <div class="flex items-center justify-between h-16 lg:h-20">
-        <!-- Logo -->
-        <NuxtLink to="/" class="flex items-center gap-2 group" id="header-logo">
-          <span class="text-lg lg:text-xl font-bold text-primary font-heading tracking-tight group-hover:text-secondary transition-colors duration-300">
-            Raditya Putranto
-          </span>
-        </NuxtLink>
+  <nav class="fixed top-0 w-full z-50 bg-white/70 backdrop-blur-xl border-b border-white/20 shadow-sm transition-all duration-300" :class="scrolled ? 'shadow-md bg-white/90' : 'shadow-sm bg-white/70'">
+    <div class="flex justify-between items-center h-nav-height px-margin-x max-w-container-max mx-auto">
+      <!-- Brand -->
+      <NuxtLink to="/" class="flex items-center gap-2 group">
+        <span class="text-lg lg:text-xl font-bold text-primary font-display tracking-tight group-hover:text-secondary transition-colors duration-300">
+          Raditya Putranto
+        </span>
+      </NuxtLink>
 
-        <!-- Desktop Nav -->
-        <nav class="hidden lg:flex items-center gap-1" id="header-nav-desktop">
-          <NuxtLink
-            v-for="link in navLinks"
-            :key="link.path"
-            :to="link.path"
-            class="nav-link"
-            :class="{ 'nav-link-active': isActive(link.path) }"
+      <!-- Links (Web) -->
+      <ul class="hidden md:flex items-center gap-8">
+        <li v-for="link in navLinks" :key="link.path">
+          <NuxtLink 
+            :to="link.path" 
+            class="transition-colors font-label-sm text-label-sm uppercase tracking-wider"
+            :class="isActive(link.path) ? 'text-primary font-bold border-b-2 border-primary pb-1' : 'text-on-surface-variant hover:text-primary'"
           >
             {{ link.label }}
           </NuxtLink>
-        </nav>
+        </li>
+      </ul>
 
-        <!-- Status Badge (Desktop) -->
-        <div class="hidden lg:block">
-          <UiStatusBadge />
-        </div>
-
-        <!-- Hamburger (Mobile) -->
-        <button
-          class="lg:hidden flex flex-col gap-1.5 p-2 group"
-          @click="$emit('toggle-drawer')"
-          aria-label="Open menu"
-          id="header-hamburger"
-        >
-          <span class="block w-6 h-0.5 bg-primary transition-all duration-300 group-hover:bg-secondary" />
-          <span class="block w-5 h-0.5 bg-primary transition-all duration-300 group-hover:bg-secondary group-hover:w-6" />
-          <span class="block w-4 h-0.5 bg-primary transition-all duration-300 group-hover:bg-secondary group-hover:w-6" />
-        </button>
-      </div>
+      <!-- Hamburger (Mobile) -->
+      <button
+        class="md:hidden flex flex-col gap-1.5 p-2 group"
+        @click="$emit('toggle-drawer')"
+        aria-label="Open menu"
+      >
+        <span class="block w-6 h-0.5 bg-primary transition-all duration-300 group-hover:bg-secondary" />
+        <span class="block w-5 h-0.5 bg-primary transition-all duration-300 group-hover:bg-secondary group-hover:w-6" />
+        <span class="block w-4 h-0.5 bg-primary transition-all duration-300 group-hover:bg-secondary group-hover:w-6" />
+      </button>
     </div>
-  </header>
+  </nav>
 </template>
 
 <script setup lang="ts">
@@ -53,15 +41,14 @@ defineEmits<{
 }>()
 
 const route = useRoute()
-const headerEl = ref<HTMLElement | null>(null)
 const scrolled = ref(false)
 
 const navLinks = [
   { label: 'Home', path: '/' },
   { label: 'Projects', path: '/projects' },
-  { label: 'Notes', path: '/notes' },
   { label: 'About', path: '/about' },
   { label: 'Contact', path: '/contact' },
+  { label: 'Notes', path: '/notes' },
 ]
 
 const isActive = (path: string) => {
@@ -77,27 +64,3 @@ onMounted(() => {
   onUnmounted(() => window.removeEventListener('scroll', handleScroll))
 })
 </script>
-
-<style scoped>
-.nav-link {
-  @apply relative px-4 py-2 text-sm font-medium text-on-surface-variant rounded-full
-    transition-all duration-300 ease-smooth
-    hover:text-primary hover:bg-primary/5;
-}
-
-.nav-link-active {
-  @apply text-primary bg-primary/[0.08] font-semibold;
-}
-
-/* Underline slide-in animation */
-.nav-link::after {
-  content: '';
-  @apply absolute bottom-1 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-secondary rounded-full
-    transition-all duration-300 ease-smooth;
-}
-
-.nav-link:hover::after,
-.nav-link-active::after {
-  @apply w-5;
-}
-</style>

@@ -2,122 +2,37 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ── Base Reset & Typography ── */
 @layer base {
   html {
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    scroll-behavior: smooth;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    @apply antialiased scroll-smooth;
   }
-
+  
   body {
-    @apply bg-surface text-on-surface;
-    overflow-x: hidden;
-  }
-
-  h1, h2, h3, h4, h5, h6 {
-    font-family: 'Plus Jakarta Sans', sans-serif;
-  }
-
-  ::selection {
-    @apply bg-primary-container text-white;
+    @apply text-on-surface bg-surface min-h-screen relative overflow-x-hidden selection:bg-[#e6deff] selection:text-[#1c0062];
   }
 }
 
-/* ── Glassmorphism Utilities ── */
-@layer components {
-  .glass {
-    @apply bg-white/70 backdrop-blur-glass border border-primary/[0.08] shadow-glass;
-  }
-
-  .glass-hover {
-    @apply hover:bg-white/80 hover:shadow-glass-hover hover:border-primary/[0.12] transition-all duration-300 ease-smooth;
-  }
-
-  .glass-card {
-    @apply glass rounded-card p-6;
-  }
-
-  .glass-card-interactive {
-    @apply glass-card glass-hover hover:-translate-y-1 cursor-pointer;
-  }
-
-  .glass-nav {
-    @apply bg-white/70 backdrop-blur-glass border-b border-outline-variant/30 shadow-nav;
-  }
+@layer utilities {
+    .glass-panel {
+        @apply bg-surface-container-lowest/70 backdrop-blur-[30px] border border-white/40 shadow-[0_8px_32px_rgba(0,0,0,0.04)] rounded-2xl;
+    }
+    .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
 }
 
-/* ── Page Transitions ── */
-.page-enter-active,
-.page-leave-active {
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+/* Dynamic Soft Gradient Animation */
+@keyframes gradientShift {
+    0% { transform: rotate(0deg) scale(1); }
+    50% { transform: rotate(180deg) scale(1.2); }
+    100% { transform: rotate(360deg) scale(1); }
 }
 
-.page-enter-from {
-  opacity: 0;
-  transform: translateY(20px);
-  filter: blur(4px);
-}
-
-.page-leave-to {
-  opacity: 0;
-  transform: translateY(-10px);
-  filter: blur(2px);
-}
-
-/* ── Layout Transitions ── */
-.layout-enter-active,
-.layout-leave-active {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.layout-enter-from,
-.layout-leave-to {
-  opacity: 0;
-}
-
-/* ── Scroll Reveal ── */
-.reveal {
-  opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-}
-
-.reveal.revealed {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.reveal-delay-1 { transition-delay: 0.1s; }
-.reveal-delay-2 { transition-delay: 0.2s; }
-.reveal-delay-3 { transition-delay: 0.3s; }
-.reveal-delay-4 { transition-delay: 0.4s; }
-
-/* ── Typing Cursor ── */
-.typing-cursor::after {
-  content: '|';
-  @apply text-secondary animate-typing-cursor ml-0.5;
-}
-
-/* ── Custom Scrollbar ── */
-::-webkit-scrollbar {
-  width: 6px;
-}
-
-::-webkit-scrollbar-track {
-  @apply bg-surface-container;
-}
-
-::-webkit-scrollbar-thumb {
-  @apply bg-outline-variant rounded-full;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  @apply bg-outline;
-}
-
-/* ── Mobile Menu Backdrop ── */
-.backdrop-dim {
-  @apply fixed inset-0 bg-primary/40 backdrop-blur-sm z-40;
+.bg-blob {
+    position: absolute;
+    filter: blur(100px);
+    opacity: 0.5;
+    animation: gradientShift 20s infinite linear;
+    z-index: -1;
+    border-radius: 50%;
 }
