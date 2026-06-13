@@ -18,6 +18,7 @@ logs
 .fleet
 .idea
 *.sw?
+/_temp
 
 # Local env files
 .env

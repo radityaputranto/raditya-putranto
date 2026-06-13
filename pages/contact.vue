@@ -1,28 +1,37 @@
 <template>
   <main class="pt-32 pb-24 px-margin-x max-w-container-max mx-auto min-h-screen">
     <!-- Header Section -->
-    <header class="text-center max-w-2xl mx-auto mb-20" v-reveal>
+    <header class="text-center max-w-4xl mx-auto mb-10" v-reveal>
       <h1 class="font-display text-display text-primary mb-6">Get in Touch</h1>
-      <p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed">
+      <p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed mb-4">
         Whether you have a project in mind or just want to say hi, I'd love to hear from you.
       </p>
-      <div class="flex flex-wrap justify-center gap-4 mt-8">
+      
+      <div class="flex items-center justify-center gap-2 font-body-md text-on-surface-variant mb-8">
+        <Icon name="material-symbols:location-on" class="text-xl text-primary" />
+        <span>Surabaya, Jawa Timur - Indonesia</span>
+      </div>
+
+      <div class="flex flex-wrap justify-center gap-4">
+        <a href="https://wa.me/6287703221344" target="_blank" title="WhatsApp" class="glass-panel p-3 rounded-xl flex items-center gap-2 transition-all duration-300 hover:scale-105 hover:bg-surface-container-lowest group border border-outline-variant/30">
+          <Icon name="mdi:whatsapp" class="text-xl text-secondary group-hover:text-[#25D366] transition-colors" />
+          <span class="font-label-sm text-label-sm text-on-surface hidden sm:block">WhatsApp</span>
+        </a>
         <a v-for="social in socials" :key="social.name" :href="social.url" target="_blank" :title="social.name" class="glass-panel p-3 rounded-xl flex items-center gap-2 transition-all duration-300 hover:scale-105 hover:bg-surface-container-lowest group border border-outline-variant/30">
-          <Icon :name="social.icon" class="text-xl text-secondary" />
+          <Icon :name="social.icon" :class="['text-xl text-secondary transition-colors', social.hoverColor]" />
           <span class="font-label-sm text-label-sm text-on-surface hidden sm:block">{{ social.name }}</span>
         </a>
       </div>
     </header>
 
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start mt-12" v-reveal="1">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start mt-4" v-reveal="1">
       <!-- Send a Message -->
       <div class="lg:col-span-8 lg:col-start-3">
         <div class="glass-panel p-8 md:p-12 rounded-[2rem] relative overflow-hidden">
           <div class="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-secondary/5 rounded-full blur-[80px]"></div>
           
           <div v-if="!isSubmitted" class="relative z-10 animate-fade-in">
-            <h2 class="font-headline-lg text-headline-lg text-primary mb-2">Send a Message</h2>
-            <p class="font-body-md text-body-md text-on-surface-variant mb-10">I usually respond within 24 hours.</p>
+            <h2 class="font-headline-lg text-headline-lg text-primary mb-6">Send a Message</h2>
             
             <form @submit.prevent="handleSubmit" class="space-y-6">
               <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -76,11 +85,13 @@ useHead({
 })
 
 const socials = [
-  { name: 'LinkedIn', icon: 'mdi:linkedin', url: 'https://linkedin.com' },
-  { name: 'Instagram', icon: 'mdi:instagram', url: 'https://instagram.com' },
-  { name: 'GitHub', icon: 'mdi:github', url: 'https://github.com' },
-  { name: 'Twitter', icon: 'mdi:twitter', url: 'https://twitter.com' },
-  { name: 'Medium', icon: 'mdi:post', url: 'https://medium.com' }
+  { name: 'LinkedIn', icon: 'mdi:linkedin', url: 'https://www.linkedin.com/in/radityaputranto/', hoverColor: 'group-hover:text-[#0A66C2]' },
+  { name: 'GitHub', icon: 'mdi:github', url: 'https://github.com', hoverColor: 'group-hover:text-black' },
+  { name: 'Instagram', icon: 'mdi:instagram', url: 'https://instagram.com', hoverColor: 'group-hover:text-[#E1306C]' },
+  { name: 'Unsplash', icon: 'mdi:camera-iris', url: 'https://unsplash.com', hoverColor: 'group-hover:text-black' },
+  { name: 'Spotify', icon: 'mdi:spotify', url: 'https://spotify.com', hoverColor: 'group-hover:text-[#1DB954]' },
+  { name: 'SoundCloud', icon: 'mdi:soundcloud', url: 'https://soundcloud.com', hoverColor: 'group-hover:text-[#FF3300]' },
+  { name: 'YouTube', icon: 'mdi:youtube', url: 'https://youtube.com', hoverColor: 'group-hover:text-[#FF0000]' }
 ]
 
 const form = reactive({

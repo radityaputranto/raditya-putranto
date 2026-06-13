@@ -68,26 +68,26 @@
         <div class="relative">
           <div class="absolute -left-[41px] top-1.5 w-5 h-5 rounded-full bg-surface border-[4px] border-primary shadow-sm z-10"></div>
           <div class="flex flex-col md:flex-row md:items-center gap-2 md:gap-6 mb-2">
-            <h4 class="font-headline-md text-headline-md text-primary">Senior Frontend Engineer</h4>
+            <h4 class="font-headline-md text-headline-md text-primary">Front End Developer</h4>
             <span class="hidden md:block w-1.5 h-1.5 rounded-full bg-outline-variant"></span>
-            <span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">2021 — Present</span>
+            <span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Jan 2019 — Present</span>
           </div>
-          <p class="font-body-md text-body-md text-primary/70 font-medium mb-3">Tech Innovators Inc.</p>
+          <p class="font-body-md text-body-md text-primary/70 font-medium mb-3">PT. Wowrack Indonesia</p>
           <p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
-            Leading the core UI architecture team. Restructured the component library resulting in a 40% reduction in deployment times and a significantly more cohesive design language across all product verticals.
+            Developed frontend web applications using Laravel and Vue.js framework. Maintained cloud applications and developed microservices including DNS Bucket, AWS integration, and Snapshots. Handled projects like Cloudraya and Neucloud Telkom Indonesia.
           </p>
         </div>
         <!-- Timeline Item -->
         <div class="relative">
           <div class="absolute -left-[41px] top-1.5 w-5 h-5 rounded-full bg-surface border-[4px] border-outline-variant z-10"></div>
           <div class="flex flex-col md:flex-row md:items-center gap-2 md:gap-6 mb-2">
-            <h4 class="font-headline-md text-headline-md text-primary">Creative Developer</h4>
+            <h4 class="font-headline-md text-headline-md text-primary">Freelance Front End Developer</h4>
             <span class="hidden md:block w-1.5 h-1.5 rounded-full bg-outline-variant"></span>
-            <span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">2018 — 2021</span>
+            <span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Mar 2022 — May 2022</span>
           </div>
-          <p class="font-body-md text-body-md text-primary/70 font-medium mb-3">Studio Rectangle</p>
+          <p class="font-body-md text-body-md text-primary/70 font-medium mb-3">CK BIDAN Sdn. Bhd.</p>
           <p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
-            Bridged the gap between design and engineering. Delivered award-winning promotional micro-sites leveraging WebGL and advanced CSS animations for high-profile client campaigns.
+            Developed the CK Mama Panel frontend web application using Laravel, Vue.js, and Bootstrap 4, allowing customers to order and pay for childbirth and baby care services.
           </p>
         </div>
       </div>
@@ -98,7 +98,7 @@
       <div class="flex flex-col md:flex-row justify-between items-baseline gap-6">
         <h2 class="font-headline-lg text-headline-lg text-primary">Selected Works</h2>
         <NuxtLink class="font-label-sm text-label-sm text-primary hover:text-secondary transition-colors uppercase tracking-widest flex items-center gap-1 group" to="/projects">
-          View All Gallery <Icon name="material-symbols:arrow-forward" class="text-[16px] transition-transform duration-300 group-hover:translate-x-1" />
+          View All Works <Icon name="material-symbols:arrow-forward" class="text-[16px] transition-transform duration-300 group-hover:translate-x-1" />
         </NuxtLink>
       </div>
       
