@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply antialiased scroll-smooth;
+  }
+  
+  body {
+    @apply text-on-surface bg-surface min-h-screen relative overflow-x-hidden selection:bg-[#e6deff] selection:text-[#1c0062];
+  }
+}
+
+@layer utilities {
+    .glass-panel {
+        @apply bg-surface-container-lowest/70 backdrop-blur-[30px] border border-white/40 shadow-[0_8px_32px_rgba(0,0,0,0.04)] rounded-2xl;
+    }
+    .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+}
+
+/* Dynamic Soft Gradient Animation */
+@keyframes gradientShift {
+    0% { transform: rotate(0deg) scale(1); }
+    50% { transform: rotate(180deg) scale(1.2); }
+    100% { transform: rotate(360deg) scale(1); }
+}
+
+.bg-blob {
+    position: absolute;
+    filter: blur(100px);
+    opacity: 0.5;
+    animation: gradientShift 20s infinite linear;
+    z-index: -1;
+    border-radius: 50%;
+}
