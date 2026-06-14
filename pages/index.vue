@@ -134,8 +134,13 @@
 const { vReveal } = useScrollReveal()
 const { projects, fetchFeatured } = useProjects()
 
-// Wait for Supabase to fetch
-await fetchFeatured()
+// Wait for Supabase to fetch, non-blocking on client side
+const { pending } = useLazyAsyncData('home-featured', async () => {
+  if (projects.value.length === 0) {
+    await fetchFeatured()
+  }
+  return true
+})
 
 useHead({
   title: 'Raditya Putranto - Portfolio'

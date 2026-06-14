@@ -19,7 +19,7 @@ export interface Project {
 }
 
 export function useProjects() {
-  const projects = ref<Project[]>([])
+  const projects = useState<Project[]>('global-projects-state', () => [])
   const loading = ref(false)
 
   const fetchProjects = async () => {

@@ -83,8 +83,11 @@ const { vReveal } = useScrollReveal()
 const { projects, fetchProjects } = useProjects()
 const activeTab = ref('development')
 
-// Wait for Supabase to fetch
-await fetchProjects()
+// Wait for Supabase to fetch, non-blocking on client side
+const { pending } = useLazyAsyncData('all-projects', async () => {
+  await fetchProjects()
+  return true
+})
 
 const photographyMock = [
   {

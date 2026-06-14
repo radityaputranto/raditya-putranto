@@ -1,5 +1,8 @@
 <template>
-  <div v-if="project" class="min-h-screen pt-[120px] md:pt-[160px]">
+  <div v-if="pending" class="min-h-screen pt-[120px] md:pt-[160px] flex items-center justify-center">
+    <div class="w-12 h-12 rounded-full border-4 border-primary/20 border-t-primary animate-spin"></div>
+  </div>
+  <div v-else-if="project" class="min-h-screen pt-[120px] md:pt-[160px]">
     <!-- Breadcrumbs -->
     <section class="max-w-container-max mx-auto px-margin-x pt-12 pb-6" v-reveal>
       <nav class="flex items-center gap-2 text-on-surface-variant/70 font-label-sm text-label-sm">
@@ -72,7 +75,7 @@
     </section>
   </div>
   
-  <div v-else class="min-h-screen pt-[120px] md:pt-[160px] flex flex-col items-center justify-center text-center px-4">
+  <div v-else-if="!pending && !project" class="min-h-screen pt-[120px] md:pt-[160px] flex flex-col items-center justify-center text-center px-4">
     <h2 class="font-display text-display text-primary mb-4">Project Not Found</h2>
     <p class="text-on-surface-variant mb-8 text-body-lg">The project you're looking for doesn't exist.</p>
     <NuxtLink to="/projects" class="bg-primary text-on-primary px-8 py-4 rounded-full font-label-sm text-label-sm hover:opacity-90 transition-all">
@@ -86,7 +89,10 @@ const { vReveal } = useScrollReveal()
 const route = useRoute()
 const { fetchBySlug } = useProjects()
 
-const project = ref(await fetchBySlug(route.params.slug as string))
+const { data: project, pending } = useLazyAsyncData(
+  `project-${route.params.slug}`,
+  () => fetchBySlug(route.params.slug as string)
+)
 
 useHead({
   title: project.value?.title ? `${project.value.title} - Raditya Putranto` : 'Project Not Found',

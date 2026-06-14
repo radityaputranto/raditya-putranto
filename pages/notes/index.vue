@@ -4,7 +4,6 @@
     <section class="flex flex-col md:flex-row justify-between items-end gap-8 mb-12" v-reveal>
       <div class="flex flex-col gap-4 w-full md:w-1/2">
         <div class="flex items-center gap-4">
-          <NuxtImg src="https://lh3.googleusercontent.com/aida-public/AB6AXuB_nUwLzCzxnWX2TflLgwyQ1nA0Um5mMOivr7y1tieByMui5SwQtW0T1VlodJ74DMTqX4ArF8-GBemrBDLFGSnxqCcrxDAQT7AwafFyFHGjY6NMRChnYVf0cDRvINItiEIjB08YoscApy6MUqBLvY77-3x8RH66z9LCSI20Kmt-rYLZEJJbfGwCzE44Kt_IRSmjE7MPOWv3IQO-NyPWG6AAx6fvsE3Uu5GeV77CBkf2UChHJh0v9tJLes-T9WcNIQuDLrzjM5G9kUo" alt="Avatar" class="w-16 h-16 rounded-full border-2 border-surface-container-lowest shadow-sm object-cover" />
           <div>
             <h1 class="font-display text-display text-on-surface">Short Notes</h1>
             <p class="font-body-lg text-body-lg text-on-surface-variant mt-1">Quick snippets and cheatsheets by Raditya.</p>
