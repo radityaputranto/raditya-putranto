@@ -1,71 +1,34 @@
-export interface Project {
-  id: string
-  slug: string
-  title: string
-  description: string
-  content: string
-  category: string
-  tech_stack: string[]
-  role: string
-  year: number
-  thumbnail_url: string
-  gallery_urls: string[]
-  live_url: string | null
-  repo_url: string | null
-  featured: boolean
-  sort_order: number
-  created_at: string
-  updated_at: string
-}
+import { projectsData } from '~/data/projects'
+import type { Project } from '~/data/projects'
+
+export type { Project }
 
 export function useProjects() {
-  const projects = useState<Project[]>('global-projects-state', () => [])
+  const projects = useState<Project[]>('global-projects-state', () => projectsData)
   const loading = ref(false)
 
   const fetchProjects = async () => {
-    loading.value = true
-    try {
-      const client = useSupabaseClient()
-      const { data, error } = await client.from('projects').select('*').order('sort_order')
-      if (error) throw error
-      if (data) projects.value = data
-    } catch (e) {
-      console.error('Error fetching projects:', e)
-    } finally {
-      loading.value = false
-    }
+    // Static data is already loaded
+    projects.value = projectsData
   }
 
   const fetchFeatured = async () => {
-    loading.value = true
-    try {
-      const client = useSupabaseClient()
-      const { data, error } = await client.from('projects').select('*').eq('featured', true).order('sort_order')
-      if (error) throw error
-      if (data) projects.value = data
-    } catch (e) {
-      console.error('Error fetching featured projects:', e)
-    } finally {
-      loading.value = false
-    }
+    // Static data is already loaded, filter by is_featured and get max 3
+    projects.value = projectsData.filter(p => p.is_featured).slice(0, 3)
   }
 
   const fetchBySlug = async (slug: string): Promise<Project | undefined> => {
-    try {
-      const client = useSupabaseClient()
-      const { data, error } = await client.from('projects').select('*').eq('slug', slug).single()
-      if (error) throw error
-      return data || undefined
-    } catch (e) {
-      console.error('Error fetching project by slug:', e)
-      return undefined
-    }
+    // Return from static data
+    return projectsData.find(p => p.slug === slug)
   }
 
-  const categories = computed(() => {
-    const cats = new Set(projects.value.map(p => p.category))
-    return ['All', ...Array.from(cats)]
+  const featuredProjects = computed(() => {
+    return projects.value.filter(p => p.is_featured).slice(0, 3)
   })
 
-  return { projects, loading, fetchProjects, fetchFeatured, fetchBySlug, categories }
+  const categories = computed(() => {
+    return ['All', 'Web App', 'Landing Page', 'Panel']
+  })
+
+  return { projects, featuredProjects, loading, fetchProjects, fetchFeatured, fetchBySlug, categories }
 }

@@ -19,7 +19,7 @@
                 @mouseenter="moveIcon(index)"
               >
                 <div class="w-14 h-14 md:w-16 md:h-16 bg-white/90 rounded-2xl shadow-lg border border-white/50 backdrop-blur-md flex items-center justify-center hover:scale-110 transition-transform duration-300">
-                  <Icon :name="icon.name" class="text-3xl md:text-4xl" :class="icon.colorClass" />
+                  <Icon :name="icon.name" :class="[icon.sizeClass || 'text-3xl md:text-4xl', icon.colorClass]" />
                 </div>
               </div>
 
@@ -40,17 +40,17 @@
 import { ref } from 'vue'
 
 const icons = ref([
-  { name: 'logos:vue', colorClass: '', offsetX: 0, offsetY: 0 },
-  { name: 'logos:react', colorClass: '', offsetX: 0, offsetY: 0 },
-  { name: 'logos:javascript', colorClass: '', offsetX: 0, offsetY: 0 },
-  { name: 'logos:typescript-icon', colorClass: '', offsetX: 0, offsetY: 0 },
-  { name: 'logos:tailwindcss-icon', colorClass: '', offsetX: 0, offsetY: 0 },
-  { name: 'logos:nuxt-icon', colorClass: '', offsetX: 0, offsetY: 0 },
-  { name: 'logos:nextjs-icon', colorClass: '', offsetX: 0, offsetY: 0 },
-  { name: 'logos:laravel', colorClass: '', offsetX: 0, offsetY: 0 },
-  { name: 'vscode-icons:file-type-photoshop', colorClass: '', offsetX: 0, offsetY: 0 },
-  { name: 'simple-icons:adobelightroom', colorClass: 'text-[#31A8FF]', offsetX: 0, offsetY: 0 },
-  { name: 'logos:figma', colorClass: '', offsetX: 0, offsetY: 0 },
+  { name: 'logos:vue', colorClass: '', sizeClass: '', offsetX: 0, offsetY: 0 },
+  { name: 'logos:react', colorClass: '', sizeClass: '', offsetX: 0, offsetY: 0 },
+  { name: 'logos:javascript', colorClass: '', sizeClass: '', offsetX: 0, offsetY: 0 },
+  { name: 'logos:typescript-icon', colorClass: '', sizeClass: '', offsetX: 0, offsetY: 0 },
+  { name: 'logos:tailwindcss-icon', colorClass: '', sizeClass: 'text-2xl md:text-3xl', offsetX: 0, offsetY: 0 },
+  { name: 'logos:nuxt-icon', colorClass: '', sizeClass: 'text-2xl md:text-3xl', offsetX: 0, offsetY: 0 },
+  { name: 'logos:nextjs-icon', colorClass: '', sizeClass: '', offsetX: 0, offsetY: 0 },
+  { name: 'logos:laravel', colorClass: '', sizeClass: '', offsetX: 0, offsetY: 0 },
+  { name: 'vscode-icons:file-type-photoshop', colorClass: '', sizeClass: '', offsetX: 0, offsetY: 0 },
+  { name: 'simple-icons:adobelightroom', colorClass: 'text-[#31A8FF]', sizeClass: '', offsetX: 0, offsetY: 0 },
+  { name: 'logos:figma', colorClass: '', sizeClass: '', offsetX: 0, offsetY: 0 },
 ])
 
 const moveIcon = (index: number) => {

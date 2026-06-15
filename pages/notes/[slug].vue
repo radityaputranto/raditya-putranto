@@ -21,7 +21,7 @@
         </div>
         <div class="flex items-center gap-2 text-on-surface-variant">
           <Icon name="material-symbols:visibility" class="text-[18px]" />
-          <span class="font-label-sm text-label-sm">Read</span>
+          <span class="font-label-sm text-label-sm">{{ note.views ?? 0 }} views</span>
         </div>
       </div>
     </header>
@@ -49,9 +49,16 @@
 <script setup lang="ts">
 const { vReveal } = useScrollReveal()
 const route = useRoute()
-const { fetchBySlug } = useNotes()
+const { fetchBySlug, trackView } = useNotes()
 
 const note = ref(await fetchBySlug(route.params.slug as string))
+
+// Track view when the page is loaded (client-side only)
+onMounted(() => {
+  if (note.value) {
+    trackView(note.value)
+  }
+})
 
 useHead({
   title: note.value?.title ? `${note.value.title} - Raditya Putranto` : 'Note Not Found',

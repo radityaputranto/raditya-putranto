@@ -1,6 +1,6 @@
 # Raditya Putranto — Portfolio
 
-Website portfolio personal yang dibangun dengan **Nuxt 3**, **Tailwind CSS**, dan **Supabase** sebagai backend.
+A personal portfolio website built with **Nuxt 3**, **Tailwind CSS**, and **Supabase** as the backend.
 
 🔗 Live: [radityaputranto.com](https://radityaputranto.com)
 
@@ -19,17 +19,17 @@ Website portfolio personal yang dibangun dengan **Nuxt 3**, **Tailwind CSS**, da
 
 ## 🗄️ Database Schema
 
-| Tabel | Deskripsi |
+| Table | Description |
 |---|---|
-| `projects` | Data project portfolio (slug, judul, deskripsi, tech stack, dll) |
-| `notes` | Artikel/catatan (slug, konten, tags, status publish) |
-| `contact_messages` | Pesan dari form kontak |
+| `notes` | Articles/notes (slug, title, content, tags, reading time, published status, views counter) |
+| `contact_messages` | Messages submitted from the contact form (name, email, subject, message, read status) |
+| `freebies` | Free digital assets/tools (title, description, category, download URL, click counter) |
 
 ---
 
-## 🚀 Setup & Instalasi
+## 🚀 Setup & Installation
 
-### 1. Clone repository
+### 1. Clone the repository
 ```bash
 git clone https://github.com/radityaputranto/raditya-putranto.git
 cd raditya-putranto
@@ -40,42 +40,42 @@ cd raditya-putranto
 npm install
 ```
 
-### 3. Konfigurasi environment
-Salin file `.env.example` menjadi `.env` lalu isi dengan kredensial Anda:
+### 3. Configure the environment variables
+Copy the `.env.example` file to `.env` and fill in your credentials:
 ```bash
 cp .env.example .env
 ```
 
-Variabel yang dibutuhkan:
+Required variables:
 
-| Variabel | Keterangan |
+| Variable | Description |
 |---|---|
-| `SUPABASE_URL` | URL project Supabase (Settings > API) |
-| `SUPABASE_KEY` | Anon key Supabase (Settings > API) |
-| `GOOGLE_SERVICE_ACCOUNT_EMAIL` | Email service account Google (opsional) |
-| `GOOGLE_PRIVATE_KEY` | Private key service account Google (opsional) |
-| `GOOGLE_SPREADSHEET_ID` | ID Google Spreadsheet untuk kontak (opsional) |
+| `SUPABASE_URL` | The Supabase project URL (Settings > API) |
+| `SUPABASE_KEY` | The Supabase anon public key (Settings > API) |
+| `GOOGLE_SERVICE_ACCOUNT_EMAIL` | Google Cloud service account email (optional) |
+| `GOOGLE_PRIVATE_KEY` | Google Cloud service account private key (optional) |
+| `GOOGLE_SPREADSHEET_ID` | Google Spreadsheet ID for syncing contact messages (optional) |
 
-### 4. Jalankan development server
+### 4. Run the development server
 ```bash
 npm run dev
 ```
 
-Aplikasi akan berjalan di `http://localhost:3000`
+The application will be running at `http://localhost:3000`
 
 ---
 
 ## 📦 Scripts
 
-| Command | Deskripsi |
+| Command | Description |
 |---|---|
-| `npm run dev` | Jalankan server development |
-| `npm run build` | Build untuk production |
-| `npm run preview` | Preview hasil build |
-| `npm run lint` | Linting kode |
+| `npm run dev` | Runs the development server |
+| `npm run build` | Builds the application for production |
+| `npm run preview` | Previews the production build locally |
+| `npm run lint` | Lints the codebase |
 
 ---
 
-## 📄 Lisensi
+## 📄 License
 
 MIT © [Raditya Putranto](https://github.com/radityaputranto)

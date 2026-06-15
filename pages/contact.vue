@@ -4,7 +4,7 @@
     <header class="text-center max-w-4xl mx-auto mb-10" v-reveal>
       <h1 class="font-display text-display text-primary mb-6">Get in Touch</h1>
       <p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed mb-4">
-        Whether you have a project in mind or just want to say hi, I'd love to hear from you.
+        Whether you have a project in mind or just want to say hi, feel free to reach out — I'm always happy to connect.
       </p>
       
       <div class="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 font-body-md text-on-surface-variant mb-8">

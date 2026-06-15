@@ -1,0 +1,14 @@
+-- Seed data for notes
+INSERT INTO public.notes (id, slug, title, excerpt, content, tags, reading_time, published, published_at, views, created_at, updated_at) VALUES
+  ('55555555-5555-5555-5555-555555555555', 'git-reset', 'Git Reset', 'How to undo things in Git — soft, mixed, and hard explained.', 'Full content...', ARRAY['Git'], 3, true, '2024-01-01 00:00:00+00', 0, '2026-06-13 10:51:45.635458+00', '2026-06-13 10:51:45.635458+00'),
+  ('66666666-6666-6666-6666-666666666666', 'docker-cleanup', 'Docker Cleanup', 'Commands to free up disk space by removing unused containers, images, and volumes.', 'Full content...', ARRAY['DevOps'], 4, true, '2024-02-01 00:00:00+00', 0, '2026-06-13 10:51:45.635458+00', '2026-06-13 10:51:45.635458+00'),
+  ('77777777-7777-7777-7777-777777777777', 'usedebounce-hook', 'useDebounce Hook', 'A simple and reusable React hook to debounce state updates.', 'Full content...', ARRAY['React'], 2, true, '2024-03-01 00:00:00+00', 0, '2026-06-13 10:51:45.635458+00', '2026-06-13 10:51:45.635458+00'),
+  ('88888888-8888-8888-8888-888888888888', 'glassmorphism', 'Glassmorphism in CSS', 'Achieve the frosted glass effect using backdrop-filter, blur, and transparency.', 'Full content...', ARRAY['CSS'], 3, true, '2024-04-01 00:00:00+00', 0, '2026-06-13 10:51:45.635458+00', '2026-06-13 10:51:45.635458+00');
+
+-- Seed data for freebies
+INSERT INTO public.freebies (id, title, description, category, url, clicks, created_at, updated_at) VALUES
+  ('06a4bd0d-fd2f-4199-af7d-0507392e7339', 'Lightroom Presets - Urban Nights', 'A pack of 5 cinematic Lightroom presets perfect for nighttime street photography and urban landscapes.', 'photography', 'https://drive.google.com/drive/folders/mock', 0, '2026-06-10 00:00:00+00', '2026-06-10 00:00:00+00'),
+  ('d9823b23-91b7-46e5-bfd1-8bab9a84dea4', 'Nuxt 3 Minimal Portfolio Template', 'A clean, modern, and highly customizable portfolio template built with Nuxt 3 and Tailwind CSS.', 'developer', 'https://github.com/mock/nuxt-portfolio', 0, '2026-05-25 00:00:00+00', '2026-05-25 00:00:00+00'),
+  ('39804032-7703-4c26-9eb5-49f763f84148', 'Figma Dashboard UI Kit', 'Comprehensive UI kit for building SaaS dashboards. Includes 50+ components, typography, and color tokens.', 'design', 'https://figma.com/community/file/mock', 0, '2026-06-01 00:00:00+00', '2026-06-01 00:00:00+00'),
+  ('59f2f141-138a-4ed4-9e2c-7f60ac18c827', 'Notion Life Planner Template', 'An all-in-one Notion workspace to organize your personal goals, daily tasks, and project management.', 'others', 'https://notion.so/mock', 0, '2026-04-15 00:00:00+00', '2026-04-15 00:00:00+00'),
+  ('cb12c56e-2aa8-4d05-92b0-39084df53739', 'Film Emulation LUTs for Video', 'Give your footage an analog feel with these 3 color grading LUTs (.cube formats included).', 'photography', 'https://drive.google.com/drive/folders/mock2', 0, '2026-06-12 00:00:00+00', '2026-06-12 00:00:00+00');

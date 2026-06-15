@@ -1,5 +1,7 @@
 <template>
   <div id="app">
+    <UiLoadingScreen />
+    <NuxtLoadingIndicator color="#62fae3" :height="3" />
     <DecorationBlobBackground />
     <NuxtLayout>
       <NuxtPage />

@@ -10,6 +10,7 @@ export interface Note {
   published_at: string
   created_at: string
   updated_at: string
+  views: number
 }
 
 export function useNotes() {
@@ -52,5 +53,25 @@ export function useNotes() {
     }
   }
 
-  return { notes, loading, fetchNotes, fetchBySlug }
+  const trackView = async (note: Note) => {
+    // Optimistically update the UI
+    note.views++
+
+    try {
+      const client = useSupabaseClient()
+      const { error } = await client.rpc('increment_note_view', {
+        note_id: note.id
+      })
+
+      if (error) {
+        // Revert on error
+        note.views--
+        throw error
+      }
+    } catch (e) {
+      console.error('Error tracking note view:', e)
+    }
+  }
+
+  return { notes, loading, fetchNotes, fetchBySlug, trackView }
 }
