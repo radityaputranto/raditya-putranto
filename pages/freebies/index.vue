@@ -1,14 +1,26 @@
 <template>
   <main class="max-w-container-max mx-auto px-margin-x pt-[120px] md:pt-[160px] pb-20 min-h-screen">
     <!-- Page Header -->
-    <div class="mb-10" v-reveal>
+    <section class="flex flex-col md:flex-row justify-between items-end gap-8 mb-10" v-reveal>
       <div class="max-w-2xl w-full">
         <h1 class="font-display text-display text-primary mb-4">Freebies</h1>
         <p class="font-body-lg text-body-lg text-on-surface-variant">
-          A collection of free resources, assets, and tools to help you create better digital experiences.
+          A collection of free resources, assets, and tools.
         </p>
       </div>
-    </div>
+      <!-- Search / Filter Bar -->
+      <div class="w-full md:w-1/3 relative group">
+        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+          <Icon name="material-symbols:search" class="text-outline-variant group-focus-within:text-primary transition-colors text-2xl" />
+        </div>
+        <input 
+          v-model="searchQuery"
+          class="w-full bg-surface-container-lowest/50 backdrop-blur-md border border-outline-variant/30 text-on-surface font-body-md rounded-full py-3.5 pl-12 pr-4 focus:outline-none focus:border-secondary focus:ring-4 focus:ring-secondary/10 focus:bg-surface-container-lowest transition-all shadow-sm duration-200 placeholder:text-on-surface-variant/40" 
+          placeholder="Search freebies..." 
+          type="text"
+        >
+      </div>
+    </section>
       
     <!-- Category Filter -->
     <UiCategoryFilter :categories="categories" v-model="activeCategory" />
@@ -20,8 +32,7 @@
           v-for="freebie in filteredFreebies" 
           :key="freebie.id"
           :href="freebie.url"
-          target="_blank"
-          rel="noopener noreferrer"
+          @click.prevent="handleClick(freebie)"
           class="glass-panel w-full p-6 md:p-8 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-6 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group"
           v-reveal
         >
@@ -41,7 +52,7 @@
           <div class="flex items-center md:flex-col md:items-end justify-between md:justify-center gap-4 shrink-0 border-t border-outline-variant/20 md:border-t-0 pt-4 md:pt-0 w-full md:w-auto mt-4 md:mt-0">
             <div class="flex items-center gap-2 text-on-surface-variant">
               <Icon name="material-symbols:calendar-today" class="text-[16px]" />
-              <span class="font-label-sm text-label-sm">{{ formatDate(freebie.updatedAt) }}</span>
+              <span class="font-label-sm text-label-sm">{{ formatDate(freebie.updated_at) }}</span>
             </div>
             <div class="flex items-center gap-2 text-on-surface-variant">
               <Icon name="material-symbols:ads-click" class="text-[16px]" />
@@ -50,7 +61,7 @@
           </div>
         </a>
       </template>
-      <div v-else class="py-20 text-center glass-panel rounded-2xl w-full">
+      <div v-else-if="!(pending || loading)" class="py-20 text-center glass-panel rounded-2xl w-full">
         <Icon name="material-symbols:inbox" class="text-[48px] text-on-surface-variant mb-4 opacity-50" />
         <h3 class="font-headline-md text-headline-md text-primary mb-2">No freebies found</h3>
         <p class="font-body-md text-body-md text-on-surface-variant">Try adjusting your category filter.</p>
@@ -63,6 +74,7 @@
 import { ref, computed } from 'vue'
 
 const { vReveal } = useScrollReveal()
+const searchQuery = ref('')
 
 useHead({
   title: 'Freebies - Raditya Putranto',
@@ -74,70 +86,33 @@ useHead({
 const categories = ['all', 'photography', 'developer', 'design', 'others']
 const activeCategory = ref('all')
 
-interface Freebie {
-  id: string
-  title: string
-  description: string
-  category: string
-  url: string
-  updatedAt: string
-  clicks: number
-}
+const { freebies, loading, fetchFreebies, trackClick } = useFreebies()
 
-// Initial mock data, replace with actual fetch from API/Supabase if needed
-const freebies = ref<Freebie[]>([
-  {
-    id: '1',
-    title: 'Lightroom Presets - Urban Nights',
-    description: 'A pack of 5 cinematic Lightroom presets perfect for nighttime street photography and urban landscapes.',
-    category: 'photography',
-    url: 'https://drive.google.com/drive/folders/mock',
-    updatedAt: '2026-06-10',
-    clicks: 1250
-  },
-  {
-    id: '2',
-    title: 'Nuxt 3 Minimal Portfolio Template',
-    description: 'A clean, modern, and highly customizable portfolio template built with Nuxt 3 and Tailwind CSS.',
-    category: 'developer',
-    url: 'https://github.com/mock/nuxt-portfolio',
-    updatedAt: '2026-05-25',
-    clicks: 843
-  },
-  {
-    id: '3',
-    title: 'Figma Dashboard UI Kit',
-    description: 'Comprehensive UI kit for building SaaS dashboards. Includes 50+ components, typography, and color tokens.',
-    category: 'design',
-    url: 'https://figma.com/community/file/mock',
-    updatedAt: '2026-06-01',
-    clicks: 2105
-  },
-  {
-    id: '4',
-    title: 'Notion Life Planner Template',
-    description: 'An all-in-one Notion workspace to organize your personal goals, daily tasks, and project management.',
-    category: 'others',
-    url: 'https://notion.so/mock',
-    updatedAt: '2026-04-15',
-    clicks: 562
-  },
-  {
-    id: '5',
-    title: 'Film Emulation LUTs for Video',
-    description: 'Give your footage an analog feel with these 3 color grading LUTs (.cube formats included).',
-    category: 'photography',
-    url: 'https://drive.google.com/drive/folders/mock2',
-    updatedAt: '2026-06-12',
-    clicks: 340
-  }
-])
+const { pending } = useLazyAsyncData('freebies-list', async () => {
+  await fetchFreebies()
+  return true
+})
 
 const filteredFreebies = computed(() => {
-  return freebies.value.filter(item => {
+  let filtered = freebies.value
+  
+  if (searchQuery.value) {
+    const q = searchQuery.value.toLowerCase()
+    filtered = filtered.filter(n => 
+      n.title.toLowerCase().includes(q) || 
+      (n.description && n.description.toLowerCase().includes(q))
+    )
+  }
+
+  return filtered.filter(item => {
     return activeCategory.value === 'all' || item.category === activeCategory.value
   })
 })
+
+const handleClick = (freebie: any) => {
+  trackClick(freebie)
+  window.open(freebie.url, '_blank', 'noopener,noreferrer')
+}
 
 const formatDate = (dateStr: string) => {
   const date = new Date(dateStr)

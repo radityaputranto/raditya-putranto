@@ -24,12 +24,8 @@
           </NuxtLink>
         </div>
       </div>
-      <div class="flex-1 w-full flex justify-center md:justify-end relative" v-reveal="{ delay: 200 }">
-        <div class="w-[340px] h-[340px] md:w-[420px] md:h-[420px] rounded-full relative overflow-hidden">
-          <div class="w-full h-full rounded-full overflow-hidden relative">
-            <img alt="Raditya Putranto Avatar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCq0sWZCpaj9BcR10An2ZKCEWZjKn_hAYwaX9ni39i4WBZv93CeYNgwOTJgVq3mTBjpK5UaoC9aH6eAkqKZkfI0H-FnGyqC-1BFeh0yrDj2tuCLUNtokfJ3pbBdaDzCN8wTUFSmUFIavRtlwDAYvbHqjPrBTvUmMtbrK-qSAxodM5VCF7-UvvtQ1fLbIIzNpyCmIdfLyXHsfsdPWl5-9IPdwFIAuSy8H07dSMryzV6BcTiMOq2EfoQxU0I--nf4ul3DhbH40lf3KQU">
-          </div>
-        </div>
+      <div class="flex-1 w-full flex justify-center md:justify-end relative mt-12 md:mt-24" v-reveal="{ delay: 200 }">
+        <UiProfileAvatar />
       </div>
     </section>
 

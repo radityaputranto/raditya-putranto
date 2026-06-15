@@ -37,7 +37,7 @@
             <Icon name="material-symbols:alternate-email" />
             Email Me
           </a>
-          <a href="#" class="glass-panel font-label-sm text-label-sm text-primary px-8 py-4 rounded-full hover:bg-white/90 transition-all flex items-center gap-2 border border-outline-variant/30">
+          <a href="https://drive.google.com/drive/folders/1_rTESu3_rVYnf1IrqlnSrIceRTO612fr?usp=sharing" target="_blank" class="glass-panel font-label-sm text-label-sm text-primary px-8 py-4 rounded-full hover:bg-white/90 transition-all flex items-center gap-2 border border-outline-variant/30">
             <Icon name="material-symbols:download" />
             Download CV
           </a>
