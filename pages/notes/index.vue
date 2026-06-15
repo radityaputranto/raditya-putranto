@@ -48,7 +48,7 @@
             </div>
             <div class="flex items-center gap-1 text-outline-variant">
               <Icon name="material-symbols:visibility" style="font-size: 14px;" />
-              <span class="text-label-sm">Read</span>
+              <span class="text-label-sm">{{ note.views ?? 0 }} views</span>
             </div>
           </div>
         </article>
@@ -69,8 +69,12 @@ const { notes, loading, fetchNotes } = useNotes()
 const searchQuery = ref('')
 const activeCategory = ref('All')
 
-// Mock categories for UI
-const categories = ['Vue.js', 'React', 'Git', 'DevOps', 'CSS']
+// Build categories dynamically from all tags in fetched notes
+const categories = computed(() => {
+  const tagSet = new Set<string>()
+  notes.value.forEach(n => n.tags?.forEach(t => tagSet.add(t)))
+  return ['All', ...Array.from(tagSet).sort()]
+})
 
 const { pending } = useLazyAsyncData('notes-list', async () => {
   await fetchNotes()
@@ -88,8 +92,9 @@ const filteredNotes = computed(() => {
     )
   }
   
-  // Note: Since category isn't in the DB schema for notes, we mock it or ignore it
-  // In a real scenario we'd filter by category here
+  if (activeCategory.value && activeCategory.value !== 'All') {
+    filtered = filtered.filter(n => n.tags?.includes(activeCategory.value))
+  }
   
   return filtered
 })

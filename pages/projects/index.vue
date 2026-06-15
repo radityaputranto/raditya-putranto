@@ -30,42 +30,55 @@
     <!-- Development Projects (Grid Layout) -->
     <div v-show="activeTab === 'development'" class="transition-opacity duration-500 animate-fade-in">
       <div class="flex flex-col gap-card-gap">
-        <div v-for="(project, index) in projects" :key="project.id" class="glass-panel overflow-hidden group relative flex flex-col hover:shadow-xl transition-all duration-500" :class="index % 2 !== 0 ? 'md:flex-row-reverse' : 'md:flex-row'" v-reveal>
-          <div class="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center relative z-10">
-            <div class="w-12 h-12 rounded-xl text-on-secondary flex items-center justify-center mb-6 shadow-lg" :class="index % 2 === 0 ? 'bg-secondary' : 'bg-tertiary-fixed !text-on-tertiary-fixed'">
-              <Icon :name="index % 2 === 0 ? 'material-symbols:web' : 'material-symbols:layers'" />
+        <!-- Skeleton cards while loading -->
+        <template v-if="pending">
+          <div v-for="i in 3" :key="'skel-' + i" class="glass-panel overflow-hidden flex flex-col md:flex-row min-h-[400px] animate-pulse">
+            <div class="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center gap-4">
+              <div class="h-8 w-3/4 rounded-xl skeleton-shimmer" />
+              <div class="h-4 w-full rounded-lg skeleton-shimmer" />
+              <div class="h-4 w-5/6 rounded-lg skeleton-shimmer" />
+              <div class="flex gap-3 mt-4">
+                <div class="h-7 w-20 rounded-full skeleton-shimmer" />
+                <div class="h-7 w-20 rounded-full skeleton-shimmer" />
+              </div>
+              <div class="flex gap-4 mt-4">
+                <div class="h-10 w-32 rounded-full skeleton-shimmer" />
+              </div>
             </div>
-            <h3 class="font-headline-lg text-headline-lg text-primary mb-4">{{ project.title }}</h3>
-            <p class="font-body-md text-body-md text-on-surface-variant mb-8 max-w-md">
-              {{ project.description }}
-            </p>
-            <div class="flex flex-wrap gap-3 mb-8">
-              <span v-for="tech in project.tech_stack" :key="tech" class="px-4 py-1.5 rounded-full border border-outline-variant/30 font-label-sm text-label-sm text-on-surface-variant">{{ tech }}</span>
-            </div>
-            <div class="flex flex-wrap gap-4">
-              <NuxtLink v-if="project.live_url" :to="project.live_url" target="_blank" class="bg-primary text-on-primary font-label-sm text-label-sm px-6 py-3 rounded-full hover:bg-secondary transition-all w-fit flex items-center gap-2">
-                Visit Website
-                <Icon name="material-symbols:open-in-new" class="text-[18px]" />
-              </NuxtLink>
-              <NuxtLink :to="'/projects/' + project.slug" class="border border-outline text-primary font-label-sm text-label-sm px-6 py-3 rounded-full hover:bg-surface-container-highest/30 transition-all w-fit flex items-center gap-2">
-                View Details
-                <Icon name="material-symbols:arrow-forward" class="text-[18px]" />
-              </NuxtLink>
-            </div>
+            <div class="w-full md:w-1/2 skeleton-shimmer" />
           </div>
-          <div class="w-full md:w-1/2 bg-surface-container-high/50 relative overflow-hidden min-h-[400px]">
-            <NuxtImg :alt="project.title" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" :src="project.thumbnail_url" />
-            <div class="absolute inset-0 bg-gradient-to-r from-surface-container-lowest/90 to-transparent md:w-1/4" :class="index % 2 !== 0 ? 'bg-gradient-to-l left-auto right-0' : 'bg-gradient-to-r left-0 right-auto'"></div>
+        </template>
+        <!-- Actual project cards -->
+        <template v-else>
+          <div v-for="(project, index) in projects" :key="project.id" v-reveal>
+            <UiProjectCard :project="project" :index="index" :show-visit-button="true" />
           </div>
-        </div>
+        </template>
       </div>
     </div>
 
     <!-- Photography Projects (Masonry Layout) -->
     <div v-show="activeTab === 'photography'" class="transition-opacity duration-500 animate-fade-in">
       <div class="columns-1 sm:columns-2 lg:columns-3 gap-card-gap space-y-card-gap">
-        <div v-for="photo in photographyMock" :key="photo.title" class="break-inside-avoid relative group rounded-2xl overflow-hidden cursor-pointer glass-panel p-2">
-          <img :alt="photo.title" class="w-full rounded-xl object-cover" :src="photo.src">
+        <div
+          v-for="photo in photographyMock"
+          :key="photo.title"
+          class="break-inside-avoid relative group rounded-2xl overflow-hidden cursor-pointer glass-panel p-2"
+        >
+          <!-- Skeleton while image loads -->
+          <div
+            v-if="!loadedPhotos.has(photo.src)"
+            class="w-full rounded-xl skeleton-shimmer"
+            style="aspect-ratio: 4/3"
+          />
+          <img
+            :alt="photo.title"
+            class="w-full rounded-xl object-cover transition-opacity duration-500"
+            :class="loadedPhotos.has(photo.src) ? 'opacity-100' : 'opacity-0 absolute inset-2'"
+            :src="photo.src"
+            loading="lazy"
+            @load="loadedPhotos.add(photo.src)"
+          >
           <div class="absolute inset-2 rounded-xl bg-primary/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4 backdrop-blur-sm">
             <div class="text-on-primary">
               <p class="font-headline-md text-headline-md mb-1">{{ photo.title }}</p>
@@ -82,8 +95,9 @@
 const { vReveal } = useScrollReveal()
 const { projects, fetchProjects } = useProjects()
 const activeTab = ref('development')
+const loadedPhotos = reactive(new Set<string>())
 
-// Wait for Supabase to fetch, non-blocking on client side
+// Static data is loaded instantly, pending is always false
 const { pending } = useLazyAsyncData('all-projects', async () => {
   await fetchProjects()
   return true
@@ -91,29 +105,49 @@ const { pending } = useLazyAsyncData('all-projects', async () => {
 
 const photographyMock = [
   {
-    title: 'Urban Geometries',
-    location: 'Tokyo, JP',
-    src: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBFQRzFL1ZxJYZkhkVp-rNzpKSsQtELtAre0iJGkY2-Fm5jK8UT9n25L7jELYp1h8IycY5fIwrF3SOu0yjyn5wE5ga38MVEvbLsvNt99pri5EeFckugmKy7X6LQ19k_lyMuzb5Rq4lyY8jetQjZ5m8_hw_EGv8mDTxkwhB2ucsosZU7hbg4OrnF9UoEsCuL4Cew-8LzlDh6jlgD6EN855UGmVfHBB4lwqX6sKKr7klpI9XrxAqDk-A11JeFVGuKsn0d39LIZUcPrcs'
+    title: 'Capture 01',
+    location: 'Photography',
+    src: '/images/photography/photo-01.jpg'
   },
   {
-    title: 'Silence & Light',
-    location: 'Studio Space',
-    src: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCbm4BhIKk7PuHFDEzpjxneqicYV7-iGSnr33pX4ZraRpG9oXUL-MmC15mmJNB6Kyx9cGcLPqosYzJR3ICPReaFReBtF9rIecT0MxTyH8qvjb13AoIKmNzwISvgDtDRlOtewKXAn0mTQ0PhBZ5pSDtqDPYdpHyKZaG5rckR_3lxtmfuVy9dH-QEN1LRSkMeIzLXLmiyMyUshi62k7hQhQwSC19t1uyL6ZtXx6Uya5TKwalBhoufp7nkEH6qLO1YBeEIwKyawjJkS9Y'
+    title: 'Capture 02',
+    location: 'Photography',
+    src: '/images/photography/photo-02.jpg'
   },
   {
-    title: 'Paper Structures',
-    location: 'Experiment',
-    src: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBrfHU66npA_RQg7ekvOxNwnI7FDILOJUl01INMJFGjUsHXYAMj8GTWOVkJ86-hEeyRI06HIkGeEDWrw9GXjCfYvti3P3b3H9MVAiHQ03JZehj9zeOjMoC_W76lBRnXgTgF3RufvXeIzv_s7LyzTcUtc4M5jaAxTCs-qr0uYmmvIxJSlr2l6GaKdbCnNtPsr7D2bfscdpCChZooec7a2f1cH0TlWRop69mct_rtui8q34p4SPmpeEpp8y3qCPRQp1mrfURiHkX1VtU'
+    title: 'Capture 03',
+    location: 'Photography',
+    src: '/images/photography/photo-03.jpg'
   },
   {
-    title: 'Glass Facades',
-    location: 'New York, NY',
-    src: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAQfmlDvyI4_6kqshC63oE0k0AtUOF_ylbQGkRFZz4Omx1QGzaQTJfoN-DAPOBDthlup7ubdLTW0SDp68YxYywMQ5bBDrdXa9Z9UpIRResqmFI2UD8OjMAgGiuTz14KhqYaTyl4qvI5vHSkQz_oDErKgEylrTzQ_-VzjkiDOq7jr9LSB_IFc4RNMv4099Su3lp6vfxpWwBFFky3Vk0lasjqQQ9zUuRzrb9cNDWtmVTSS7k-X4q6bwxNVk4BGJ9Q18sf0-921YpKzJ8'
+    title: 'Capture 04',
+    location: 'Photography',
+    src: '/images/photography/photo-04.jpg'
   },
   {
-    title: 'Natural Patterns',
-    location: 'Winter Series',
-    src: 'https://lh3.googleusercontent.com/aida-public/AB6AXuC3Si4Y0QG6B0Lg2UNnkajTbr_bd97yaVEQWQYKZeeUYq4r-Fj0QL4V_WlbSpZYJkHezAL86wDHZjMuYSBbUObTE0yI7rzl2MUTsjsRrjlS7jqpg2bngU6pcWg5E4B3qcMwXIJGwfTTpSXk8LKHfhsI0xrCH3tOUup37ZF6pCmAJ0u7lWqT0-IakzXrJ8L8vfsWI3OP1XSe7O3EhwQ7-ImpxD2u0MEQHfz0SSLP_d5BfoTB0D1jSi5zRIJnqAhsIdeBJBNt3Ibhyyc'
+    title: 'Capture 05',
+    location: 'Photography',
+    src: '/images/photography/photo-05.jpg'
+  },
+  {
+    title: 'Capture 06',
+    location: 'Photography',
+    src: '/images/photography/photo-06.jpg'
+  },
+  {
+    title: 'Capture 07',
+    location: 'Photography',
+    src: '/images/photography/photo-07.jpg'
+  },
+  {
+    title: 'Capture 08',
+    location: 'Photography',
+    src: '/images/photography/photo-08.jpg'
+  },
+  {
+    title: 'Capture 09',
+    location: 'Photography',
+    src: '/images/photography/photo-09.jpg'
   }
 ]
 
@@ -129,5 +163,21 @@ useHead({
 }
 .animate-fade-in {
   animation: fadeIn 0.4s ease-out forwards;
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    hsl(var(--md-sys-color-surface-container) / 0.5) 25%,
+    hsl(var(--md-sys-color-surface-container-high) / 0.8) 50%,
+    hsl(var(--md-sys-color-surface-container) / 0.5) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.6s infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
 }
 </style>

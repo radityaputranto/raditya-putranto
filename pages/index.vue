@@ -98,28 +98,9 @@
         </NuxtLink>
       </div>
       
-      <div class="grid grid-cols-1 md:grid-cols-12 gap-card-gap">
-        <div v-for="(project, index) in projects" :key="project.id" class="md:col-span-12 glass-panel overflow-hidden group relative flex flex-col hover:shadow-xl transition-all duration-500" :class="index % 2 !== 0 ? 'md:flex-row-reverse' : 'md:flex-row'">
-          <div class="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center relative z-10">
-            <div class="w-12 h-12 rounded-xl text-on-secondary flex items-center justify-center mb-6 shadow-lg" :class="index % 2 === 0 ? 'bg-secondary' : 'bg-tertiary-fixed !text-on-tertiary-fixed'">
-              <Icon :name="index % 2 === 0 ? 'material-symbols:web' : 'material-symbols:layers'" />
-            </div>
-            <h3 class="font-headline-lg text-headline-lg text-primary mb-4">{{ project.title }}</h3>
-            <p class="font-body-md text-body-md text-on-surface-variant mb-8 max-w-md">
-              {{ project.description }}
-            </p>
-            <div class="flex flex-wrap gap-3 mb-8">
-              <span v-for="tech in project.tech_stack.slice(0, 3)" :key="tech" class="px-4 py-1.5 rounded-full border border-outline-variant/30 font-label-sm text-label-sm text-on-surface-variant">{{ tech }}</span>
-            </div>
-            <NuxtLink :to="'/projects/' + project.slug" class="bg-primary text-on-primary font-label-sm text-label-sm px-6 py-3 rounded-full hover:bg-secondary transition-all w-fit flex items-center gap-2">
-              View Details
-              <Icon name="material-symbols:arrow-forward" class="text-[18px]" />
-            </NuxtLink>
-          </div>
-          <div class="w-full md:w-1/2 bg-surface-container-high/50 relative overflow-hidden min-h-[400px]">
-            <NuxtImg :alt="project.title" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" :src="project.thumbnail_url" />
-            <div class="absolute inset-0 bg-gradient-to-r from-surface-container-lowest/90 to-transparent md:w-1/4" :class="index % 2 !== 0 ? 'bg-gradient-to-l left-auto right-0' : 'bg-gradient-to-r left-0 right-auto'"></div>
-          </div>
+      <div class="flex flex-col gap-card-gap">
+        <div v-for="(project, index) in featuredProjects" :key="project.id" v-reveal="{ delay: index * 100 }">
+          <UiProjectCard :project="project" :index="index" :show-visit-button="false" />
         </div>
       </div>
     </section>
@@ -128,15 +109,7 @@
 
 <script setup lang="ts">
 const { vReveal } = useScrollReveal()
-const { projects, fetchFeatured } = useProjects()
-
-// Wait for Supabase to fetch, non-blocking on client side
-const { pending } = useLazyAsyncData('home-featured', async () => {
-  if (projects.value.length === 0) {
-    await fetchFeatured()
-  }
-  return true
-})
+const { featuredProjects } = useProjects()
 
 useHead({
   title: 'Raditya Putranto - Portfolio'
