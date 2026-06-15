@@ -49,6 +49,7 @@ const navLinks = [
   { label: 'About', path: '/about' },
   { label: 'Contact', path: '/contact' },
   { label: 'Notes', path: '/notes' },
+  { label: 'Freebies', path: '/freebies' },
 ]
 
 const isActive = (path: string) => {

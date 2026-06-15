@@ -17,7 +17,7 @@
         </div>
         <input 
           v-model="searchQuery"
-          class="w-full bg-surface-container-lowest/50 backdrop-blur-md border border-outline-variant/30 text-on-surface font-body-md rounded-full py-3.5 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-secondary-fixed focus:bg-surface-container-lowest focus:border-transparent transition-all shadow-sm placeholder:text-outline-variant" 
+          class="w-full bg-surface-container-lowest/50 backdrop-blur-md border border-outline-variant/30 text-on-surface font-body-md rounded-full py-3.5 pl-12 pr-4 focus:outline-none focus:border-secondary focus:ring-4 focus:ring-secondary/10 focus:bg-surface-container-lowest transition-all shadow-sm duration-200 placeholder:text-on-surface-variant/40" 
           placeholder="Search notes..." 
           type="text"
         >
@@ -25,24 +25,7 @@
     </section>
     
     <!-- Filter Tags -->
-    <div class="flex flex-wrap gap-3 mb-8" v-reveal="1">
-      <button 
-        @click="activeCategory = 'All'"
-        :class="activeCategory === 'All' ? 'bg-primary text-on-primary' : 'bg-surface-container-high text-on-surface-variant hover:bg-surface-tint hover:text-white'"
-        class="px-4 py-1.5 rounded-full font-label-sm text-label-sm transition-all"
-      >
-        All
-      </button>
-      <button 
-        v-for="cat in categories" 
-        :key="cat"
-        @click="activeCategory = cat"
-        :class="activeCategory === cat ? 'bg-primary text-on-primary' : 'bg-surface-container-high text-on-surface-variant hover:bg-surface-tint hover:text-white'"
-        class="px-4 py-1.5 rounded-full font-label-sm text-label-sm transition-all"
-      >
-        {{ cat }}
-      </button>
-    </div>
+    <UiCategoryFilter :categories="categories" v-model="activeCategory" :reveal-delay="1" />
 
     <!-- Bento Grid: Cheatsheet Cards -->
     <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-card-gap items-stretch" v-reveal="2">
@@ -73,7 +56,7 @@
     </section>
     
     <!-- Empty State -->
-    <div v-if="filteredNotes.length === 0" class="text-center py-20">
+    <div v-if="!(pending || loading) && filteredNotes.length === 0" class="text-center py-20">
       <p class="text-on-surface-variant">No notes found matching your criteria.</p>
     </div>
   </main>
@@ -81,7 +64,7 @@
 
 <script setup lang="ts">
 const { vReveal } = useScrollReveal()
-const { notes, fetchNotes } = useNotes()
+const { notes, loading, fetchNotes } = useNotes()
 
 const searchQuery = ref('')
 const activeCategory = ref('All')
@@ -89,7 +72,10 @@ const activeCategory = ref('All')
 // Mock categories for UI
 const categories = ['Vue.js', 'React', 'Git', 'DevOps', 'CSS']
 
-await fetchNotes()
+const { pending } = useLazyAsyncData('notes-list', async () => {
+  await fetchNotes()
+  return true
+})
 
 const filteredNotes = computed(() => {
   let filtered = notes.value

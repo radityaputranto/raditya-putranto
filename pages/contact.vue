@@ -13,7 +13,7 @@
           <span>Surabaya, Indonesia</span>
         </div>
         <div class="flex items-center gap-2">
-          <Icon name="material-symbols:alternate-email" class="text-xl text-primary" />
+          <Icon name="material-symbols:mail" class="text-xl text-primary" />
           <a href="mailto:radityaputranto.works@gmail.com" class="hover:text-primary transition-colors">radityaputranto.works@gmail.com</a>
         </div>
       </div>
