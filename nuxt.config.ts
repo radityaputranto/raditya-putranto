@@ -58,6 +58,9 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
+    googleServiceAccountEmail: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL || '',
+    googlePrivateKey: process.env.GOOGLE_PRIVATE_KEY || '',
+    googleSpreadsheetId: process.env.GOOGLE_SPREADSHEET_ID || '',
     public: {
       supabaseUrl: process.env.SUPABASE_URL || '',
       supabaseKey: process.env.SUPABASE_KEY || '',

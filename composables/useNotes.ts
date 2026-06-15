@@ -13,8 +13,8 @@ export interface Note {
 }
 
 export function useNotes() {
-  const notes = ref<Note[]>([])
-  const loading = ref(false)
+  const notes = useState<Note[]>('notes-data', () => [])
+  const loading = useState('notes-loading', () => false)
 
   const fetchNotes = async () => {
     loading.value = true

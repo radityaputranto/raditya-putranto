@@ -15,6 +15,9 @@
     "node": "24.x"
   },
   "dependencies": {
+    "@vuelidate/core": "^2.0.3",
+    "@vuelidate/validators": "^2.0.4",
+    "googleapis": "^173.0.0",
     "nuxt": "^3.17.0",
     "vue": "^3.5.0",
     "vue-router": "^4.5.0"

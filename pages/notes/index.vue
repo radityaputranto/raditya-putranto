@@ -4,7 +4,6 @@
     <section class="flex flex-col md:flex-row justify-between items-end gap-8 mb-12" v-reveal>
       <div class="flex flex-col gap-4 w-full md:w-1/2">
         <div class="flex items-center gap-4">
-          <NuxtImg src="https://lh3.googleusercontent.com/aida-public/AB6AXuB_nUwLzCzxnWX2TflLgwyQ1nA0Um5mMOivr7y1tieByMui5SwQtW0T1VlodJ74DMTqX4ArF8-GBemrBDLFGSnxqCcrxDAQT7AwafFyFHGjY6NMRChnYVf0cDRvINItiEIjB08YoscApy6MUqBLvY77-3x8RH66z9LCSI20Kmt-rYLZEJJbfGwCzE44Kt_IRSmjE7MPOWv3IQO-NyPWG6AAx6fvsE3Uu5GeV77CBkf2UChHJh0v9tJLes-T9WcNIQuDLrzjM5G9kUo" alt="Avatar" class="w-16 h-16 rounded-full border-2 border-surface-container-lowest shadow-sm object-cover" />
           <div>
             <h1 class="font-display text-display text-on-surface">Short Notes</h1>
             <p class="font-body-lg text-body-lg text-on-surface-variant mt-1">Quick snippets and cheatsheets by Raditya.</p>
@@ -18,7 +17,7 @@
         </div>
         <input 
           v-model="searchQuery"
-          class="w-full bg-surface-container-lowest/50 backdrop-blur-md border border-outline-variant/30 text-on-surface font-body-md rounded-full py-3.5 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-secondary-fixed focus:bg-surface-container-lowest focus:border-transparent transition-all shadow-sm placeholder:text-outline-variant" 
+          class="w-full bg-surface-container-lowest/50 backdrop-blur-md border border-outline-variant/30 text-on-surface font-body-md rounded-full py-3.5 pl-12 pr-4 focus:outline-none focus:border-secondary focus:ring-4 focus:ring-secondary/10 focus:bg-surface-container-lowest transition-all shadow-sm duration-200 placeholder:text-on-surface-variant/40" 
           placeholder="Search notes..." 
           type="text"
         >
@@ -26,24 +25,7 @@
     </section>
     
     <!-- Filter Tags -->
-    <div class="flex flex-wrap gap-3 mb-8" v-reveal="1">
-      <button 
-        @click="activeCategory = 'All'"
-        :class="activeCategory === 'All' ? 'bg-primary text-on-primary' : 'bg-surface-container-high text-on-surface-variant hover:bg-surface-tint hover:text-white'"
-        class="px-4 py-1.5 rounded-full font-label-sm text-label-sm transition-all"
-      >
-        All
-      </button>
-      <button 
-        v-for="cat in categories" 
-        :key="cat"
-        @click="activeCategory = cat"
-        :class="activeCategory === cat ? 'bg-primary text-on-primary' : 'bg-surface-container-high text-on-surface-variant hover:bg-surface-tint hover:text-white'"
-        class="px-4 py-1.5 rounded-full font-label-sm text-label-sm transition-all"
-      >
-        {{ cat }}
-      </button>
-    </div>
+    <UiCategoryFilter :categories="categories" v-model="activeCategory" :reveal-delay="1" />
 
     <!-- Bento Grid: Cheatsheet Cards -->
     <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-card-gap items-stretch" v-reveal="2">
@@ -74,7 +56,7 @@
     </section>
     
     <!-- Empty State -->
-    <div v-if="filteredNotes.length === 0" class="text-center py-20">
+    <div v-if="!(pending || loading) && filteredNotes.length === 0" class="text-center py-20">
       <p class="text-on-surface-variant">No notes found matching your criteria.</p>
     </div>
   </main>
@@ -82,7 +64,7 @@
 
 <script setup lang="ts">
 const { vReveal } = useScrollReveal()
-const { notes, fetchNotes } = useNotes()
+const { notes, loading, fetchNotes } = useNotes()
 
 const searchQuery = ref('')
 const activeCategory = ref('All')
@@ -90,7 +72,10 @@ const activeCategory = ref('All')
 // Mock categories for UI
 const categories = ['Vue.js', 'React', 'Git', 'DevOps', 'CSS']
 
-await fetchNotes()
+const { pending } = useLazyAsyncData('notes-list', async () => {
+  await fetchNotes()
+  return true
+})
 
 const filteredNotes = computed(() => {
   let filtered = notes.value

@@ -6,7 +6,7 @@
       <div class="absolute -top-24 -right-24 w-64 h-64 bg-primary-fixed rounded-full blur-[80px] opacity-30 z-0"></div>
       <div class="flex-shrink-0 relative">
         <div class="w-48 h-48 md:w-64 md:h-64 rounded-full overflow-hidden border-4 border-white shadow-xl bg-white flex items-center justify-center">
-          <img alt="Raditya Putranto" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/AP1WRLthzjIV6pD3G82oisWAN5TTSfzsE6GJJOWfkKmMjUg19K8rMV8-KlGaNkYDyrf-b-0oPjDq62fM5B-z6ncCDHbK7G_U2MsF4BpEo7cVU4poFe7xX_Kux5u4xSIVnQYdU8phD_0myH2MfjQl-4VYb_qF2EBnbfHBXHcio8mEiBbna5arq_Ft0sFejeEtOcF5qkmrvYBu6vEIjfcS_9CetnZnYpIhjW142wx_28LuF2pxGxuN4ysCcrl2Lg">
+          <img alt="Raditya Putranto" class="w-full h-full object-cover" src="/profile.jpg">
         </div>
         <div class="absolute bottom-4 right-4 bg-tertiary-fixed text-on-tertiary-fixed-variant font-label-sm text-label-sm px-4 py-1.5 rounded-full shadow-lg flex items-center gap-2 border border-white">
           <span class="w-2 h-2 rounded-full bg-on-tertiary-container animate-pulse"></span>
@@ -14,21 +14,30 @@
         </div>
       </div>
       <div class="flex-1 text-center md:text-left z-10">
-        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-surface-container-low font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-6">
-          Full-time Frontend Developer &amp; Freelance Photographer
+        <div class="font-label-md text-secondary tracking-widest uppercase mb-4">
+          Frontend Developer · Freelance Photographer
         </div>
         <h1 class="font-display text-display text-primary mb-6 leading-tight">
           I'm Raditya Putranto
         </h1>
-        <p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mb-8 leading-relaxed">
-          A Full-time Frontend Developer and Freelance Photographer blending technical precision with artistic vision to create high-fidelity digital experiences and compelling visual narratives.
-        </p>
+        <div class="font-body-lg text-on-surface-variant max-w-2xl mb-8 space-y-4 leading-relaxed">
+          <p>
+            Hello! I'm an experienced Frontend Developer with a deep passion for building intuitive, high-performance web applications. I specialize in modern JavaScript frameworks like Vue.js and Nuxt, blending technical precision with creative design to craft digital experiences that people love to use.
+          </p>
+          <p>
+            Beyond coding, I'm a freelance photographer. This creative outlet sharpens my eye for detail, composition, and visual storytelling—qualities that seamlessly translate into my approach to user interface design. I believe the best digital products are built at the intersection of robust engineering and beautiful aesthetics.
+          </p>
+        </div>
         <div class="flex flex-wrap items-center justify-center md:justify-start gap-4">
           <NuxtLink to="/contact" class="bg-primary text-on-primary font-label-sm text-label-sm px-8 py-4 rounded-full hover:shadow-xl hover:-translate-y-1 transition-all flex items-center gap-2">
             <Icon name="material-symbols:mail" />
             Get In Touch
           </NuxtLink>
-          <a href="#" class="glass-panel font-label-sm text-label-sm text-primary px-8 py-4 rounded-full hover:bg-white/90 transition-all flex items-center gap-2 border border-outline-variant/30">
+          <a href="mailto:radityaputranto.works@gmail.com" class="glass-panel font-label-sm text-label-sm text-primary px-8 py-4 rounded-full hover:bg-white/90 transition-all flex items-center gap-2 border border-outline-variant/30">
+            <Icon name="material-symbols:alternate-email" />
+            Email Me
+          </a>
+          <a href="https://drive.google.com/drive/folders/1_rTESu3_rVYnf1IrqlnSrIceRTO612fr?usp=sharing" target="_blank" class="glass-panel font-label-sm text-label-sm text-primary px-8 py-4 rounded-full hover:bg-white/90 transition-all flex items-center gap-2 border border-outline-variant/30">
             <Icon name="material-symbols:download" />
             Download CV
           </a>

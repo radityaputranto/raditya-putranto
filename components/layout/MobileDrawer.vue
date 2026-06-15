@@ -59,6 +59,7 @@ const navLinks = [
   { label: 'Home', path: '/', icon: '🏠' },
   { label: 'Projects', path: '/projects', icon: '💼' },
   { label: 'Notes', path: '/notes', icon: '📝' },
+  { label: 'Freebies', path: '/freebies', icon: '🎁' },
   { label: 'About', path: '/about', icon: '👤' },
   { label: 'Contact', path: '/contact', icon: '✉️' },
 ]

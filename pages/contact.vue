@@ -7,16 +7,18 @@
         Whether you have a project in mind or just want to say hi, I'd love to hear from you.
       </p>
       
-      <div class="flex items-center justify-center gap-2 font-body-md text-on-surface-variant mb-8">
-        <Icon name="material-symbols:location-on" class="text-xl text-primary" />
-        <span>Surabaya, Jawa Timur - Indonesia</span>
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 font-body-md text-on-surface-variant mb-8">
+        <div class="flex items-center gap-2">
+          <Icon name="material-symbols:location-on" class="text-xl text-primary" />
+          <span>Surabaya, Indonesia</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <Icon name="material-symbols:mail" class="text-xl text-primary" />
+          <a href="mailto:radityaputranto.works@gmail.com" class="hover:text-primary transition-colors">radityaputranto.works@gmail.com</a>
+        </div>
       </div>
 
       <div class="flex flex-wrap justify-center gap-4">
-        <a href="https://wa.me/6287703221344" target="_blank" title="WhatsApp" class="glass-panel p-3 rounded-xl flex items-center gap-2 transition-all duration-300 hover:scale-105 hover:bg-surface-container-lowest group border border-outline-variant/30">
-          <Icon name="mdi:whatsapp" class="text-xl text-secondary group-hover:text-[#25D366] transition-colors" />
-          <span class="font-label-sm text-label-sm text-on-surface hidden sm:block">WhatsApp</span>
-        </a>
         <a v-for="social in socials" :key="social.name" :href="social.url" target="_blank" :title="social.name" class="glass-panel p-3 rounded-xl flex items-center gap-2 transition-all duration-300 hover:scale-105 hover:bg-surface-container-lowest group border border-outline-variant/30">
           <Icon :name="social.icon" :class="['text-xl text-secondary transition-colors', social.hoverColor]" />
           <span class="font-label-sm text-label-sm text-on-surface hidden sm:block">{{ social.name }}</span>
@@ -33,20 +35,27 @@
           <div v-if="!isSubmitted" class="relative z-10 animate-fade-in">
             <h2 class="font-headline-lg text-headline-lg text-primary mb-6">Send a Message</h2>
             
-            <form @submit.prevent="handleSubmit" class="space-y-6">
+            <UiAlert v-if="errorMessage" type="error" class="mb-6">
+              {{ errorMessage }}
+            </UiAlert>
+
+            <form @submit.prevent="handleSubmit" class="space-y-6" novalidate>
               <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="space-y-2">
-                  <label class="font-label-sm text-label-sm text-on-surface-variant ml-1" for="name">Name</label>
-                  <input v-model="form.name" class="w-full h-14 px-6 rounded-xl font-body-md bg-surface-container-lowest/50 border border-outline-variant/30 text-on-surface placeholder:text-on-surface-variant/40 focus:bg-surface-container-lowest focus:border-secondary focus:ring-4 focus:ring-secondary/10 transition-all shadow-sm" id="name" required type="text" placeholder="Jane Doe">
+                  <label class="font-label-sm text-label-sm text-on-surface-variant ml-1 transition-colors duration-200" :class="{ 'text-error': v$.name.$error }" for="name">Name <span class="text-error">*</span></label>
+                  <input v-model="form.name" @blur="v$.name.$touch()" class="w-full h-14 px-6 rounded-xl font-body-md bg-surface-container-lowest/50 border text-on-surface placeholder:text-on-surface-variant/40 focus:bg-surface-container-lowest transition-all shadow-sm duration-200" :class="v$.name.$error ? 'border-error focus:border-error focus:ring-4 focus:ring-error/10' : 'border-outline-variant/30 focus:border-secondary focus:ring-4 focus:ring-secondary/10'" id="name" type="text" placeholder="Jane Doe">
+                  <p v-if="v$.name.$error" class="text-error text-[11px] font-label-sm ml-1 animate-fade-in">{{ v$.name.$errors[0].$message }}</p>
                 </div>
                 <div class="space-y-2">
-                  <label class="font-label-sm text-label-sm text-on-surface-variant ml-1" for="email">Email</label>
-                  <input v-model="form.email" class="w-full h-14 px-6 rounded-xl font-body-md bg-surface-container-lowest/50 border border-outline-variant/30 text-on-surface placeholder:text-on-surface-variant/40 focus:bg-surface-container-lowest focus:border-secondary focus:ring-4 focus:ring-secondary/10 transition-all shadow-sm" id="email" required type="email" placeholder="jane@example.com">
+                  <label class="font-label-sm text-label-sm text-on-surface-variant ml-1 transition-colors duration-200" :class="{ 'text-error': v$.email.$error }" for="email">Email <span class="text-error">*</span></label>
+                  <input v-model="form.email" @blur="v$.email.$touch()" class="w-full h-14 px-6 rounded-xl font-body-md bg-surface-container-lowest/50 border text-on-surface placeholder:text-on-surface-variant/40 focus:bg-surface-container-lowest transition-all shadow-sm duration-200" :class="v$.email.$error ? 'border-error focus:border-error focus:ring-4 focus:ring-error/10' : 'border-outline-variant/30 focus:border-secondary focus:ring-4 focus:ring-secondary/10'" id="email" type="email" placeholder="jane@example.com">
+                  <p v-if="v$.email.$error" class="text-error text-[11px] font-label-sm ml-1 animate-fade-in">{{ v$.email.$errors[0].$message }}</p>
                 </div>
               </div>
               <div class="space-y-2">
-                <label class="font-label-sm text-label-sm text-on-surface-variant ml-1" for="message">Message</label>
-                <textarea v-model="form.message" class="w-full p-6 rounded-xl font-body-md bg-surface-container-lowest/50 border border-outline-variant/30 text-on-surface placeholder:text-on-surface-variant/40 focus:bg-surface-container-lowest focus:border-secondary focus:ring-4 focus:ring-secondary/10 transition-all shadow-sm resize-none" id="message" required rows="6" placeholder="Tell me about your project or just say hello..."></textarea>
+                <label class="font-label-sm text-label-sm text-on-surface-variant ml-1 transition-colors duration-200" :class="{ 'text-error': v$.message.$error }" for="message">Message <span class="text-error">*</span></label>
+                <textarea v-model="form.message" @blur="v$.message.$touch()" class="w-full p-6 rounded-xl font-body-md bg-surface-container-lowest/50 border text-on-surface placeholder:text-on-surface-variant/40 focus:bg-surface-container-lowest transition-all shadow-sm resize-none duration-200" :class="v$.message.$error ? 'border-error focus:border-error focus:ring-4 focus:ring-error/10' : 'border-outline-variant/30 focus:border-secondary focus:ring-4 focus:ring-secondary/10'" id="message" rows="6" placeholder="Tell me about your project or just say hello..."></textarea>
+                <p v-if="v$.message.$error" class="text-error text-[11px] font-label-sm ml-1 animate-fade-in">{{ v$.message.$errors[0].$message }}</p>
               </div>
               <div class="pt-4">
                 <button type="submit" :disabled="isSubmitting" class="w-full md:w-auto px-10 h-14 bg-primary text-on-primary rounded-full font-label-sm text-label-sm flex items-center justify-center gap-3 transition-all duration-300 hover:shadow-xl hover:shadow-primary/10 active:scale-95 group disabled:opacity-50 disabled:cursor-not-allowed">
@@ -78,6 +87,9 @@
 </template>
 
 <script setup lang="ts">
+import { useVuelidate } from '@vuelidate/core'
+import { required, email } from '@vuelidate/validators'
+
 const { vReveal } = useScrollReveal()
 
 useHead({
@@ -86,12 +98,15 @@ useHead({
 
 const socials = [
   { name: 'LinkedIn', icon: 'mdi:linkedin', url: 'https://www.linkedin.com/in/radityaputranto/', hoverColor: 'group-hover:text-[#0A66C2]' },
-  { name: 'GitHub', icon: 'mdi:github', url: 'https://github.com', hoverColor: 'group-hover:text-black' },
-  { name: 'Instagram', icon: 'mdi:instagram', url: 'https://instagram.com', hoverColor: 'group-hover:text-[#E1306C]' },
-  { name: 'Unsplash', icon: 'mdi:camera-iris', url: 'https://unsplash.com', hoverColor: 'group-hover:text-black' },
-  { name: 'Spotify', icon: 'mdi:spotify', url: 'https://spotify.com', hoverColor: 'group-hover:text-[#1DB954]' },
-  { name: 'SoundCloud', icon: 'mdi:soundcloud', url: 'https://soundcloud.com', hoverColor: 'group-hover:text-[#FF3300]' },
-  { name: 'YouTube', icon: 'mdi:youtube', url: 'https://youtube.com', hoverColor: 'group-hover:text-[#FF0000]' }
+  { name: 'GitHub', icon: 'mdi:github', url: 'https://github.com/radityaputranto', hoverColor: 'group-hover:text-black' },
+  { name: 'Instagram', icon: 'mdi:instagram', url: 'https://www.instagram.com/raditya_putranto/', hoverColor: 'group-hover:text-[#E1306C]' },
+  { name: 'Unsplash', icon: 'mdi:camera-iris', url: 'https://unsplash.com/@raditya_putranto', hoverColor: 'group-hover:text-black' },
+  { name: 'Spotify', icon: 'mdi:spotify', url: 'https://open.spotify.com/user/21ercmyaahviavsid45c74oai', hoverColor: 'group-hover:text-[#1DB954]' },
+  { name: 'SoundCloud', icon: 'mdi:soundcloud', url: 'https://soundcloud.com/raditya_putranto', hoverColor: 'group-hover:text-[#FF3300]' },
+  { name: 'YouTube', icon: 'mdi:youtube', url: 'https://www.youtube.com/@raditya_putranto', hoverColor: 'group-hover:text-[#FF0000]' },
+  { name: 'Twitter', icon: 'mdi:twitter', url: 'https://x.com/radityaputranto', hoverColor: 'group-hover:text-black' },
+  { name: 'Behance', icon: 'mdi:behance', url: 'https://www.behance.net/radityaputranto', hoverColor: 'group-hover:text-[#0057ff]' },
+  { name: 'Dribbble', icon: 'mdi:dribbble', url: 'https://dribbble.com/raditya_putranto', hoverColor: 'group-hover:text-[#ea4c89]' }
 ]
 
 const form = reactive({
@@ -100,21 +115,49 @@ const form = reactive({
   message: ''
 })
 
+const rules = {
+  name: { required },
+  email: { required, email },
+  message: { required }
+}
+
+const v$ = useVuelidate(rules, form)
+
 const isSubmitting = ref(false)
 const isSubmitted = ref(false)
+const errorMessage = ref('')
 
 const handleSubmit = async () => {
+  v$.value.$touch()
+  if (v$.value.$invalid) return
+
   isSubmitting.value = true
-  // Mock API call
-  await new Promise(resolve => setTimeout(resolve, 1500))
-  isSubmitting.value = false
-  isSubmitted.value = true
+  errorMessage.value = ''
+  
+  try {
+    await $fetch('/api/contact', {
+      method: 'POST',
+      body: {
+        name: form.name,
+        email: form.email,
+        message: form.message
+      }
+    })
+    isSubmitted.value = true
+  } catch (error: any) {
+    console.error('Failed to submit form:', error)
+    errorMessage.value = error.data?.statusMessage || 'An error occurred while sending your message. Please try again later.'
+  } finally {
+    isSubmitting.value = false
+  }
 }
 
 const resetForm = () => {
   form.name = ''
   form.email = ''
   form.message = ''
+  errorMessage.value = ''
+  v$.value.$reset()
   isSubmitted.value = false
 }
 </script>
